@@ -5,6 +5,13 @@ Setup:
 Nodejs 8.11.1
 MySQL Database
 
+-- Modify App.js line: 34 to 36
+
+MySQL Server: localhost
+User Name: root
+Password: root
+
+
 -- Install Guide
 
 1. Run db.sql to create tables and users
