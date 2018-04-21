@@ -104,6 +104,18 @@ router.get('/getOrderDetailByID', function(req, res, next) {
 });
 
 
+/* GET getRevenueMonthly. */
+router.get('/getRevenueMonthly', function(req, res, next) {
+	connection.query('select year(orderdate) yy, month(orderdate) mm, sum(orderingcost) revenue from orders group by month(orderdate)', function (error, results, fields) {
+	  	if(error){
+	  		res.send(JSON.stringify({"status": 500, "error": error, "response": null})); 
+	  	} else {
+  			res.send(JSON.stringify({"status": 200, "error": null, "response": results}));
+	  	}
+  	});
+});
+
+
 /* Create order. */
 router.get('/insOrder', function(req, res, next) {
     connection.query('insert into orders (`orderdate`, `orderingcost`, `UID`) select now(), sum(menuprice), \'customer\' from menu a, cart b where a.menuid = b.menuid', function (error, results, fields) {
