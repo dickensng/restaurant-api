@@ -33,7 +33,7 @@ app.use(function(req, res, next){
 	global.connection = mysql.createConnection({
 	  	host     : 'localhost',
 	  	user     : 'root',
-        password : 'root',
+      password : 'root',
   		database : 'comp5322'
 	});
 	connection.connect();

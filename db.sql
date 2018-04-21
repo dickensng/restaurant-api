@@ -95,5 +95,6 @@ CREATE TABLE IF NOT EXISTS `orderdetail` (
 );
 
 CREATE TABLE IF NOT EXISTS `cart` (
-  `menuID` MEDIUMINT NOT NULL
+  `menuID` MEDIUMINT NOT NULL,
+  `UID` varchar(41) NOT NULL
 );

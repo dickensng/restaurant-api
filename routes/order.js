@@ -118,7 +118,7 @@ router.get('/getRevenueMonthly', function(req, res, next) {
 
 /* Create order. */
 router.get('/insOrder', function(req, res, next) {
-    connection.query('insert into orders (`orderdate`, `orderingcost`, `UID`) select now(), sum(menuprice), \'customer\' from menu a, cart b where a.menuid = b.menuid', function (error, results, fields) {
+    connection.query('insert into orders (`orderdate`, `orderingcost`, `UID`) select now(), sum(menuprice), ? from menu a, cart b where a.menuid = b.menuid', [req.query.uid], function (error, results, fields) {
         if(error){
 	  		res.send(JSON.stringify({"status": 500, "error": error, "response": null})); 
 	  	} else {

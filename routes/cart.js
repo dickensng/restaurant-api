@@ -4,7 +4,7 @@ var router = express.Router();
 
 /* Add item to shopping cart */
 router.get('/addCart', function(req, res, next){
-	connection.query('insert into cart ( `menuID` ) VALUES ( ? )', [req.query.menuID], function (error, results, fields) {
+	connection.query('insert into cart ( `menuID`, `UID` ) VALUES ( ?, ? )', [req.query.menuID, req.query.uid], function (error, results, fields) {
 	  	if(error){
 	  		res.send(JSON.stringify({"status": 500, "error": error, "response": null})); 
 	  	} else {
@@ -16,7 +16,7 @@ router.get('/addCart', function(req, res, next){
 
 /* Get shopping cart */
 router.get('/getCart', function(req, res, next) {
-	connection.query('select a.* from menu a, cart b where a.menuid = b.menuid order by a.menutype', function (error, results, fields) {
+	connection.query('select a.* from menu a, cart b where a.menuid = b.menuid and b.UID = ? order by a.menutype', [req.query.uid], function (error, results, fields) {
 	  	if(error){
 	  		res.send(JSON.stringify({"status": 500, "error": error, "response": null})); 
 	  	} else {
@@ -52,7 +52,7 @@ router.get('/getGroupedCart', function(req, res, next) {
 
 /* Remove item from shopping cart */
 router.get('/removeCart', function (req, res, next) {
-	connection.query('delete from cart where menuID = ? LIMIT 1', [req.query.menuID], function (error, results, fields) {
+	connection.query('delete from cart where menuID = ? and UID = ? LIMIT 1', [req.query.menuID, req.query.uid], function (error, results, fields) {
 	  	if(error){
 	  		res.send(JSON.stringify({"status": 500, "error": error, "response": null})); 
 	  	} else {
