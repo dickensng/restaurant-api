@@ -106,7 +106,7 @@ router.get('/getOrderDetailByID', function(req, res, next) {
 
 /* GET getRevenueMonthly. */
 router.get('/getRevenueMonthly', function(req, res, next) {
-	connection.query('select year(orderdate) yy, month(orderdate) mm, sum(orderingcost) revenue from orders group by month(orderdate)', function (error, results, fields) {
+	connection.query('select year(orderdate) yy, month(orderdate) mm, sum(orderingcost) revenue from orders group by year(orderdate), month(orderdate)', function (error, results, fields) {
 	  	if(error){
 	  		res.send(JSON.stringify({"status": 500, "error": error, "response": null})); 
 	  	} else {
@@ -118,16 +118,16 @@ router.get('/getRevenueMonthly', function(req, res, next) {
 
 /* Create order. */
 router.get('/insOrder', function(req, res, next) {
-    connection.query('insert into orders (`orderdate`, `orderingcost`, `UID`) select now(), sum(menuprice), ? from menu a, cart b where a.menuid = b.menuid', [req.query.uid], function (error, results, fields) {
+    connection.query('insert into orders (`orderdate`, `orderingcost`, `UID`) select now(), sum(menuprice), ? from menu a, cart b where a.menuid = b.menuid and b.uid = ?', [req.query.uid, req.query.uid], function (error, results, fields) {
         if(error){
 	  		res.send(JSON.stringify({"status": 500, "error": error, "response": null})); 
 	  	} else {
             var orderid = results.insertId;
-            connection.query('insert into orderdetail (`orderid`, `menuID`, `menuprice`, `quantity`) select ?, a.menuid, a.menuprice, b.qty from menu a, (select menuid, count(*) qty from cart group by menuid) b where a.menuid = b.menuid', [orderid], function (error, results2, fields2) {
+            connection.query('insert into orderdetail (`orderid`, `menuID`, `menuprice`, `quantity`) select ?, a.menuid, a.menuprice, b.qty from menu a, (select menuid, count(*) qty from cart where uid = ? group by menuid) b where a.menuid = b.menuid', [orderid, req.query.uid], function (error, results2, fields2) {
                 if(error){
                     res.send(JSON.stringify({"status": 500, "error": error, "response": null})); 
                 } else {
-                    connection.query('delete from cart', function (error, results3, fields3) {
+                    connection.query('delete from cart where uid = ?', [req.query.uid], function (error, results3, fields3) {
                         if(error){
                             res.send(JSON.stringify({"status": 500, "error": error, "response": null})); 
                         } else {

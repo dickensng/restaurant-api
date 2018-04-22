@@ -16,7 +16,7 @@ router.get('/addCart', function(req, res, next){
 
 /* Get shopping cart */
 router.get('/getCart', function(req, res, next) {
-	connection.query('select a.* from menu a, cart b where a.menuid = b.menuid and b.UID = ? order by a.menutype', [req.query.uid], function (error, results, fields) {
+	connection.query('select a.* from menu a, cart b where a.menuid = b.menuid and b.UID = ? order by a.menutype, a.menuid', [req.query.uid], function (error, results, fields) {
 	  	if(error){
 	  		res.send(JSON.stringify({"status": 500, "error": error, "response": null})); 
 	  	} else {

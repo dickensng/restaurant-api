@@ -24,7 +24,7 @@ router.get('/signin', function(req, res, next) {
             
 	  	} else if ( results.length > 0 ) {
   			req.session.uid = req.query.uid;
-            connection.query('delete from cart', function (error, results3, fields3) {});
+            connection.query('delete from cart where uid = ?', [req.query.uid], function (error, results3, fields3) {});
             res.send(JSON.stringify({"status": 200, "error": null, "response": "success", "role": results[0].role}));
             
 	  	} else {
