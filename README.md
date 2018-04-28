@@ -2,8 +2,9 @@
 
 Setup:
 
-Nodejs 8.11.1
-MySQL Database
+1. install Nodejs 8.11.1
+
+2. install MySQL Database
 
 -- Modify App.js line: 34 to 36
 
@@ -28,3 +29,7 @@ Password: root
 
 2. Run command node start
 
+
+-- URL
+
+http://localhost:4001/
